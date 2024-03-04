@@ -20,7 +20,7 @@ public class HelloWorldJob {
 
   @Bean
   public Step step() {
-    return new StepBuilder("step1", jobRepository)
+    return new StepBuilder("step", jobRepository)
       .tasklet((contribution, chunkContext) -> {
         System.out.println("Hello, World!");
         return RepeatStatus.FINISHED;
