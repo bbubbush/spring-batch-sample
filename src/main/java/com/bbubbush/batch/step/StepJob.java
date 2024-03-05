@@ -1,8 +1,12 @@
 package com.bbubbush.batch.step;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.*;
+import org.springframework.batch.core.ExitStatus;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobExecutionListener;
+import org.springframework.batch.core.Step;
+import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
@@ -11,16 +15,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
-public class MultiStepJob {
+public class StepJob {
   private final PlatformTransactionManager transactionManager;
   private final JobRepository jobRepository;
 
   @Bean
-  public Job stepJob() {
-    return new JobBuilder("stepJob", jobRepository)
+  public Job simpleStepJob() {
+    return new JobBuilder("simpleStepJob", jobRepository)
       .start(step1())
       .listener(jobLisnerEvent())
       .next(step2())
