@@ -28,19 +28,29 @@ public class HttpJob {
   public Job simpleCatJob() {
     return new JobBuilder("simpleCatJob", jobRepository)
       .incrementer(new RunIdIncrementer())
-      .start(catStep())
+      .start(getRandomImageStep())
+      .build();
+  }
+
+  @Bean
+  public Step getRandomImageStep() {
+    return new StepBuilder("getRandomImageStep", jobRepository)
+      .tasklet((contribution, chunkContext) -> {
+    	  catService.getRandomImage();
+        return RepeatStatus.FINISHED;
+      }, platformTransactionManager)
       .build();
   }
 
   @Bean
   public Step catStep() {
-    return new StepBuilder("catStep", jobRepository)
-      .tasklet((contribution, chunkContext) -> {
-    	  if (!catService.downloadImage("https://cdn2.thecatapi.com/images/cid.jpg")) {
-    		  return RepeatStatus.CONTINUABLE;
-    	  }
-        return RepeatStatus.FINISHED;
-      }, platformTransactionManager)
-      .build();
+	  return new StepBuilder("catStep", jobRepository)
+			  .tasklet((contribution, chunkContext) -> {
+				  if (!catService.downloadImage("https://cdn2.thecatapi.com/images/cid.jpg")) {
+					  return RepeatStatus.CONTINUABLE;
+				  }
+				  return RepeatStatus.FINISHED;
+			  }, platformTransactionManager)
+			  .build();
   }
 }
