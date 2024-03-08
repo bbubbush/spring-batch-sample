@@ -1,10 +1,10 @@
 package com.bbubbush.batch.http.dto;
 
-import lombok.Setter;
+import lombok.Getter;
 import lombok.ToString;
 
-@Setter
 @ToString
+@Getter
 public class CatResDto {
 
 	private String id;

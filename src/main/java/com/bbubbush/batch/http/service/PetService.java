@@ -1,11 +1,13 @@
 package com.bbubbush.batch.http.service;
 
+import java.util.List;
+
 public interface PetService {
 
 	boolean downloadImage(String uri);
 
-	void getRandomImage();
+	String getRandomImageUrl();
 
-	void getRandomImages(int size);
+	List<String> getRandomImageUrls(int size);
 
 }
